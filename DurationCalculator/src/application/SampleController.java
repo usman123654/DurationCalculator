@@ -7,8 +7,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Hours;
 import org.joda.time.Minutes;
-import org.joda.time.Seconds;
-
+import org.joda.time.Months;
+import org.joda.time.Years;
 import com.jfoenix.controls.JFXTimePicker;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -31,7 +31,7 @@ public class SampleController extends Application {
 	@FXML
 	public void calculate() {
 		
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy"); 
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");		
 		
 		//Formatting the starting and ending dates
@@ -42,6 +42,7 @@ public class SampleController extends Application {
 	    String dateStart = startingDate+" "+startTime.getValue()+":00";
 	    String dateEnd = endingDate+" "+endTime.getValue()+":00";
 	    
+	   
 	    Date d1 = null;
 		Date d2 = null;
 		
@@ -51,33 +52,29 @@ public class SampleController extends Application {
 
 			DateTime dt1 = new DateTime(d1);
 			DateTime dt2 = new DateTime(d2);
-
-			System.out.print(Days.daysBetween(dt1, dt2).getDays() + " days, ");
-			System.out.print(Hours.hoursBetween(dt1, dt2).getHours() % 24 + " hours, ");
-			System.out.print(Minutes.minutesBetween(dt1, dt2).getMinutes() % 60 + " minutes, ");
-			System.out.print(Seconds.secondsBetween(dt1, dt2).getSeconds() % 60 + " seconds.");
-
 		
+			if(d1.before(d2)) {
+				    totalYears.setText(Years.yearsBetween(dt1,dt2).getYears()+"");
+					totalMonths.setText(Months.monthsBetween(dt1,dt2).getMonths() + "");
+					totalDays.setText(Days.daysBetween(dt1,dt2).getDays() + "");
+					totalHours.setText(Hours.hoursBetween(dt1,dt2).getHours()%24 + "");
+					totalMinutes.setText(Minutes.minutesBetween(dt1,dt2).getMinutes()%60 + "");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		 }
 	}
 	public void clear() {
-		
+		totalYears.clear();
+		totalMonths.clear();
+		totalDays.clear();
+		totalHours.clear();
+		totalMinutes.clear();
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		System.out.println("Hello World!");
 
 	}
-	
-	@FXML
-	public void initialize() {
-		startTime.setIs24HourView(true);
-		endTime.setIs24HourView(true);
-	    
-	}
-
 }
 
 	
