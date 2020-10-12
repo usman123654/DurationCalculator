@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="bs/css/bootstrap.min.css">
+<script src="bs/js/bootstrap.min.js"></script>
+<script src="jquery/jquery.min.js"></script>
+<title>Daily Check List</title>
+<link rel="shortcut icon" th:href="@{/images/icons/favicon.ico}">
+<script type="text/javascript"
+	th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+</head>
+<body>
+	<div style="background-color: #107050; height: 75px; color: white;">
+		<img
+			style="padding-bottom: 35px; padding-top: 5px; padding-left: 10px;"
+			src="images/logo.png" /> <label
+			style="font-size: 30px; padding-bottom: 50px;">Directorate
+			General Immigration & Passports</label>
+	</div>
+	<div class="container-fluid">
+		<div class="shadow-lg p-3 mb-2 bg-white rounded">
+			<span> <legend>
+					<h4 style="font-family: sans-serif; outline: none;"
+						th:text="''+${rpoName}">Daily Check List ${rpoName}</h4>
+				</legend>
+				<hr>
+
+			</span> <span style="float: right;"> <input type='submit'
+				id="editform" class="btn btn-outline-secondary"
+				value="&nbsp;&nbsp;Edit Form&nbsp;&nbsp;" style="float: initial">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="button" id="add" style="background-color: #107050"
+				class="btn btn-success" value="+">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="button" id="remove" style="background-color: #922B21"
+				class="btn btn-danger" value="-">
+			</span> <br> <br>
+			<!--Div for Table-->
+
+
+			<table class="table table-bordered table-striped" id="datatable">
+				<thead>
+					<tr>
+						<td width="5%">S.no.</td>
+						<td width="25%">Item Description</td>
+						<td width="10%">Status</td>
+						<td width="60%">Remarks about current condition of the item</td>
+					</tr>
+				</thead>
+				<tbody>
+					<form action="#" th:action="@{/dailyReportInventory/submit}"
+						th:object="${userID}" method="POST">
+						<input type="hidden" name="userID" th:value="${userID}" />
+						<tr th:each="items,iterationStatus:${items}">
+							<td th:text=${iterationStatus.count} style="font-size: small;" />
+							<td th:text="${items.category.name}"
+								style="font-size: small; max-width: 1.7cm; overflow-wrap: break-word;" />
+					</form>
+					<td>02</td>
+					<td><select class="form-control" disabled>
+							<option>Server</option>
+							<option>PC</option>
+							<option>Monitor</option>
+							<option>LED</option>
+					</select></td>
+					<td><select class="form-control" id="status" disabled>
+							<option value="working">Wroking</option>
+							<option value="notworking">Good</option>
+							<option value="notworking">Hardly Wroking</option>
+							<option value="notworking">Faulty</option>
+					</select></td>
+					<td><textarea class="form-control" rows="1" id="remarks"
+							disabled>Working Area</textarea></td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+		<hr />
+		<div align="right">
+			<input type="reset" class="btn btn-default" value="Cancel" />&nbsp;&nbsp;&nbsp;
+			<input type='submit' id="btn-submit" class="btn btn-primary"
+				style="background-color: #107050; color: white;"
+				value="&nbsp;&nbsp;Save&nbsp;&nbsp;">
+		</div>
+		<br /> <br />
+	</div>
+
+
+	<footer>
+		<div style="background-color: #107050; color: aliceblue;"
+			align="center">Copyright&#169;DGIP (Database Wing) +92 51
+			9107043</div>
+	</footer>
+	</div>
+</body>
+</html>
+
+<style>
+@media print {
+	#printPageButton {
+		display: none;
+	}
+	#addItemButton {
+		display: none;
+	}
+}
+
+.table tr td {
+	line-height: 20px;
+	min-height: 20px;
+	height: 20px;
+	padding: 0px 0px 0px 5px;
+}
+
+.table thead tr td {
+	line-height: 30px;
+	min-height: 30px;
+	height: 30px;
+	padding: 0px 0px 0px 5px;
+}
+</style>
+<script>
+	$('#edit').click(function() {
+		$('select').removeAttr('disabled');
+
+	})
+	$('this').click(function() {
+		removeAttr('disabled');
+	});
+
+	var id = 0;
+	var sr = 13;
+	//add row for new item
+	//$(document).ready(function(){
+	$("#add")
+			.click(
+					function() {
+						id++;
+
+						$("#datatable tbody")
+								.append(
+										"<tr>"
+												+ "<td>"
+												+ ++sr
+												+ "</td>"
+												+ "<td><select class='form-control'><option>Server</option>"
+												+ "<option>PC</option><option>Monitor</option><option>LED</option></select>"
+												+ "</td>"
+												+ "<td>"
+												+ "<select class='form-control' id=status" + id +  ">"
+												+ "<option value='working'>Wroking</option>"
+												+ "<option value='notworking'>Good</option>"
+												+ "<option value='notworking'>Hardly Wroking</option>"
+												+ "<option value='notworking'>Faulty</option>"
+												+ "</select>"
+												+ "</td>"
+												+ "<td><textarea class='form-control' rows='1' id='remarks' >Working Area</textarea></td>"
+												+ "<td></td>" + "</tr>");
+
+					});
+
+	$("#remove").click(function() {
+		if (sr > 13) {
+			$('#datatable tr:last').remove();
+			sr--;
+		}
+	});
+</script>

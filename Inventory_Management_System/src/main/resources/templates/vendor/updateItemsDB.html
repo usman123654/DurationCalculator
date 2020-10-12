@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="shortcut icon" th:href="@{/images/icons/favicon.ico}">
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<title>Hardware Directory</title>
+	<script>
+		$(document).ready(function () {
+			$("#selectedcategory").change(function () {
+				var selectedcategory = $(this).children("option:selected").text();
+				if ((selectedcategory == 'pc') || (selectedcategory == 'Server')) {
+					$("#ramLabel").show();
+					$("#ram").show();
+					$("#selectedprocessor").show();
+					$("#processorlabel").show();
+				} else {
+					$("#ramLabel").hide();
+					$("#ram").hide();
+					$("#selectedprocessor").hide();
+					$("#processorlabel").hide();
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<script>
+		$(document).ready(function () {
+			window.history.pushState(null, "", window.location.href);
+			window.onpopstate = function () {
+				window.history.pushState(null, "", window.location.href);
+			};
+		});
+	</script>
+	<p id="id_time"></p>
+	<div class="container-fluid">
+		</br>
+		<h3 style="font-size: large;">Hardware Directory</h3>
+		<hr>
+		<p class="h4 mb-4 h-40" style="font-size: medium;">Update Item</p>
+		<form id="myForm" autocomplete="off" action="#" th:action="@{/items/update}" th:object="${item}" method="POST">
+			<div class="form-row">
+				<div class="col-md-3">
+					<label id="categoryLabel" style="font-size: small">Category:</label><select id="selectedcategory"
+						th:field="*{category}" class="form-control mb-4 col-10" style="font-size: small">
+
+						<option type="text" th:each="category:${category}" class="form-control mb-4 col-10"
+							style="font-size: small" th:value="${category.Id}" th:name="${category.Name}"
+							th:text="${category.Name}" />
+					</select>
+					<!-- Add hidden form field to handle update -->
+					<label id="manufacturerLabel" style="font-size: small">Manufacturer:</label><select
+						id="selectedmanufacturer" th:field="*{manufacturer}" class="form-control mb-4 col-10"
+						style="font-size: small">
+						<option type="text" th:each="manufacturer:${manufacturer}" class="form-control mb-4 col-10"
+							style="font-size: small" th:value="${manufacturer.Id}" th:name="${manufacturer.Name}"
+							th:text="${manufacturer.Name}" />
+					</select>
+					<label id="processorlabel" style="font-size: small">Processor:</label>
+					<select id="selectedprocessor" th:field="*{processor}" class="form-control mb-4 col-10"
+						style="font-size: small">
+						<option th:each="processor:${processor}" class="form-control mb-4 col-9"
+							style="font-size: small" th:value="${processor.Id}" th:name="${processor.Name}"
+							th:text="${processor.Name}" />
+					</select>
+				</div>
+				<div class="col-md-3">
+					<label id="modelLabel" style="font-size: small">Model:</label> <input id="model" type="text"
+						th:field="*{model}" class="form-control mb-4 col-10" style="font-size: small"
+						placeholder="model">
+					<label id="ramLabel" style="font-size: small">RAM:</label> <input id="ram" type="text"
+						th:field="*{Ram}" class="form-control mb-4 col-10" style="font-size: small" placeholder="ram">
+					<label id="serialLabel" style="font-size: small">Serial No:</label><input id="serialNo" type="text"
+						th:field="*{serialNo}" class="form-control mb-4 col-10" style="font-size: small"
+						placeholder="serialNo"> </select>
+				</div>
+				<div class="col-md-3 h-25">
+					<label id="serviceTagNoLabel" style="font-size: small">Service
+						Tag No:</label> <input id="serviceTagNo" type="text" th:field="*{serviceTagNo}"
+						class="form-control mb-4 col-10" style="font-size: small" placeholder="Service Tag No"> <label
+						id="supplierLabel" style="font-size: small">Supplier:</label> <select id="selectedsupplier"
+						th:field="*{supplier}" class="form-control mb-4 col-10" style="font-size: small">
+						<option th:each="supplier:${supplier}" class="form-control mb-4 col-9" style="font-size: small"
+							th:value="${supplier.Id}" th:name="${supplier.Name}" th:text="${supplier.Name}" />
+					</select>
+
+					<label id="recommendedBy" style="font-size:small">Recommended By:</label>
+					<select id="section" th:field="*{section}" class="form-control mb-1 col-10" style="font-size:small">
+						<option th:each="section:${section}" class="form-control mb-1 col-9" style="font-size:small"
+							th:value="${section.Id}" th:name="${section.Name}" th:text="${section.Name}" />
+					</select>
+
+				</div>
+
+				<div class="col-md-3 h-25">
+					<label id="datePurchaseLabel" style="font-size:small">Date Purchase:</label>
+					<input rows="5" col="4" id="date_purchase" type="date" th:field="*{date_purchase}"
+						class="form-control mb-1 col-10" style="font-size:small" placeholder="Date Purchase" />
+					<br>
+					<label id="vendorLabel" style="font-size:small">Vendor:</label>
+					<input rows="5" col="4" id="vendor" type="text" th:field="*{vendor}"
+						class="form-control mb-1 col-10" style="font-size:small" placeholder="Vendor" />
+					<br>
+					<label id="dateExpiryLabel" style="font-size:small">Warranty Expiry:</label>
+					<input rows="5" col="4" id="date_expiry" type="date" th:field="*{date_expiry}"
+						class="form-control mb-1 col-10" style="font-size:small" />
+				</div>
+
+				<input id="itemid" name="itemid" type="hidden" th:field="${item.Id}" class="form-control mb-4 col-6"
+					placeholder="item"> <input id="userid" name="userid" type="hidden" th:field="${item.user.id}"
+					class="form-control mb-4 col-6" style="font-size: small" placeholder="user"> <input
+					id="updateItemButton" type="submit"
+					onclick="if (!(confirm('Are you sure you want to update this item?'))) return false"
+					th:action="@{/items/update}" class="btn btn-info row-1 col-2" style="font-size: small;height: 0.9cm"
+					value="Update Item" />
+		</form>
+		<br>
+		<form id="backtomainpage" style="padding-left: 0.2cm;height:1.0cm;width:4cm" action="#" th:action="@{/items/showMainPage}" th:object="${user}" method="POST">
+			<input id="userid" name="userid" type="hidden" th:field="${item.user.id}" class="form-control mb-4 col-6"
+				style="font-size: small" placeholder="user">
+			<input id="userid" name="userid" type="hidden" th:field="${user.Id}" class="btn btn-info row-1 col-5" style="font-size: small;height: 0.9cm;width:3cm"
+				placeholder="user">
+			<button type="submit" class="btn btn-info col-19" style="font-size:small;height:0.9cm;width:3cm">Main Page</button>
+		</form>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Hardware Management</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<!-- Bootstrap CSS -->
+	<link rel="shortcut icon" th:href="@{/images/icons/favicon.ico}">
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/bootstrap.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/font-awesome.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/material-design-iconic-font.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/animate.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/hamburgers.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/animsition.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/select2.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/daterangepicker.css}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" th:href="@{/index_files/util.css}">
+	<link rel="stylesheet" th:href="@{/index_files/main.css}">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+	<script>
+		$(document).ready(function () {
+			window.history.pushState(null, "", window.location.href);
+			window.onpopstate = function () {
+				window.history.pushState(null, "", window.location.href);
+			};
+		});
+	</script>
+	<script>
+		// When the user scrolls the page, execute myFunction
+		window.onscroll = function () {
+			myFunction()
+		};
+
+		function myFunction() {
+				document.getElementById("nav").style.width = window.pageXOffset+1300+"px";
+		}
+	</script>
+
+	<nav class="navbar navbar-expand-lg navbar-light" style="background-color:#90EE90;">
+		<a class="navbar-brand" href="#" th:text="''+${rpoName}" style="font-size: large;">Welcome</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent" style="overflow-y:hidden">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="nav-item active"><a class="nav-link" href="#">Change
+						Password</a>
+				</li>
+
+				<li class="nav-item dropdown">
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another
+							action</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item active"><a th:href="@{/}" class="nav-link" href="#">Logout</a>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0"></form>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		</br>
+		<h3 style="font-size:large;">Hardware Management</h3>
+		<hr>
+		<!-- Add Hardware button -->
+		<form action="#" th:action="@{/items/showFormForAddDB}" th:object="${userID}" method="POST">
+			<input type="hidden" name="userID" th:value="${userID}" />
+			<button type="submit" class="btn btn-primary btn-sm mb-3">Add
+				Hardware</button>
+		</form>
+		<div class="table-wrapper-scroll-y my-custom-scrollbar">
+			<table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+				<thead class="thead-white">
+					<tr>
+						<th style="font-size: small;">Id</th>
+						<th style="font-size: small;">Cat</th>
+						<th style="font-size: small;">Manufa cturer</th>
+						<th style="font-size: small;">Processor</th>
+						<th style="font-size: small;">Cores</th>
+						<th style="font-size: small;">Model</th>
+						<th style="font-size: small;">RAM</th>
+						<th style="font-size: small;">Hard Drives</th>
+						<th style="font-size: small;">Licence Info</th>
+						<th style="font-size: small;">Reference Letter</th>
+						<th style="font-size: small;">Sr.No</th>
+						<th style="font-size: small;">Service Tag No</th>
+						<th style="font-size: small;">Condition</th>
+						<th style="font-size: small;">Purchaser Info</th>
+						<th style="font-size: small;">Invoice</th>
+						<th style="font-size: small;">Location Server</th>
+						<th style="font-size: small;">Supplier</th>
+						<th style="font-size: small;">Remarks</th>
+						<th style="font-size: small;">Date Purchase</th>
+						<th style="font-size: small;">Vendor</th>
+						<th style="font-size: small;">Warranty Expiry</th>
+						<th style="font-size: small;">Price</th>
+						<th style="font-size: small;">Recomm ender</th>
+						<th style="font-size: small;">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="items : ${items}">
+						<td th:text="${items.Id}" style="font-size: small;" />
+						<td th:text="${items.category.name}" style="font-size: small;" />
+						<td th:text="${items.manufacturer.name}" style="font-size: small;" />
+						<td th:text="${items.processor.name}" style="font-size: small;" />
+						<td th:text="${items.cores}" style="font-size: small;" />
+						<td th:text="${items.model}" style="font-size: small;" />
+						<td th:text="${items.ram}" style="font-size: small;" />
+						<td th:text="${items.hardDrive}" style="font-size: small;" />
+						<td th:text="${items.license}" style="font-size: small;" />
+						<td th:text="${items.refLetter}" style="font-size: small;" />
+						<td th:text="${items.serialNo}" style="font-size: small;" />
+						<td th:text="${items.serviceTagNo}" style="font-size: small;" />
+					    <td th:text="${items.condition.name}" style="font-size: small;" />
+						<td th:text="${items.purchaser}" style="font-size: small;" />
+						<td th:text="${items.invoiceBillNo}" style="font-size:small;" />
+						<td th:text="${items.location}" style="font-size:small;" />
+						<td th:text="${items.supplier.name}" style="font-size:small;" />
+						<td th:text="${items.remarks}" style="font-size: small;" />
+						<td th:text="${items.date_purchase}" style="font-size: small;" />
+						<td th:text="${items.vendor}" style="font-size: small;" />
+						<td th:text="${items.date_expiry}" style="font-size: small;" />
+						<td th:text="${items.price}" style="font-size: small;" />
+						<td th:text="${items.section.name}" style="font-size: small;" />
+
+						<td>
+							<div class="row" style="width: 4.2cm">
+
+								<div class="col-small">
+									<!-- Add "update" button/link -->
+									<form th:action="@{/items/showFormForUpdateDB}" th:object="${items}" method="POST">
+										<input type="hidden" name="items" th:value="${items.id}" />
+										<button type="submit" class="btn btn-info btn-sm ml-3 mr-1"
+											style="font-size: small;">
+											Update</button>
+									</form>
+								</div>
+
+								<div class="col-small">
+									<!-- Add "delete" button/link -->
+									<form th:action="@{/delete/DatabaseItems}" th:object="${items}" method="POST">
+										<input type="hidden" name="items" th:value="${items.id}" />
+										<button type="submit" class="btn btn-danger btn-sm"
+											onclick="if (!(confirm('Are you sure you want to delete this item?'))) return false"
+											style="font-size: small;">
+											Delete</button>
+									</form>
+
+								</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	</div>
+</body>
+</body>
+
+</html>

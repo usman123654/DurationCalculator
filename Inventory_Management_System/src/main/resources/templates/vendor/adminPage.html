@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Hardware Management</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<!-- Bootstrap CSS -->
+<link rel="shortcut icon" th:href="@{/images/icons/favicon.ico}">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->
+<link rel="stylesheet" th:href="@{/index_files/font-awesome.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet"
+	th:href="@{/index_files/material-design-iconic-font.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" th:href="@{/index_files/animate.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" th:href="@{/index_files/hamburgers.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" th:href="@{/index_files/animsition.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" th:href="@{/index_files/select2.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" th:href="@{/index_files/daterangepicker.css}">
+<!--===============================================================================================-->
+<link rel="stylesheet" th:href="@{/index_files/util.css}">
+<link rel="stylesheet" th:href="@{/index_files/main.css}">
+
+<script type="text/javascript"
+	th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+<link rel="stylesheet"
+	th:href="@{/webjars/datatables/1.10.19/js/jquery.dataTables.min.js}">
+<link rel="stylesheet"
+	th:href="@{/webjars/datatables/1.10.19/css/jquery.dataTables.min.css}">
+
+<script type="text/javascript" th:src="@{/dist/jquery.table2excel.js}"></script>
+</head>
+<body>
+	<script>
+		
+	</script>
+	<script>
+		$(function() {
+			$("#exportToExcel").click(function(e) {
+				$("#table2excel").table2excel({
+					filename : "Inventory_Report" + new Date()
+				});
+
+			});
+		});
+	</script>
+	<script>
+		function generateReport() {
+			if ($(
+			"#rposlist option:selected")
+			.text() == 'All Regional Offices and Missions Abroad') {
+				$("#thCategory").hide();
+				$("#thManufacturer").hide();
+				$("#thProcessor").hide();
+				$("#thCores").hide();
+				$("#thModel").hide();
+				$("#thRAM").hide();
+				$("#thHD").hide();
+				$("#thLicence").hide();
+				$("#thReferenceLetterNo").hide();
+				$("#thSerialNo").hide();
+				$("#thServiceTagNo").hide();
+				$("#thCondition").hide();
+				$("#thPurchaserInfo").hide();
+				$("#thInvoice").hide();
+				$("#thLocation").hide();
+				$("#thSupplier").hide();
+				$("#thDatePurchase").hide();
+				$("#thVendor").hide();
+				$("#thWarranty").hide();
+				$("#thPrice").hide();
+				$("#thRecommender").hide();
+				$("#thRemarks").hide();
+				
+				var username = $("#rposlist option:selected").text();
+				$.ajax({
+					type : "POST",
+					dataType : "json",
+					url : "/report/allOfficesProducts",
+					data : {
+						username : username
+					},
+					success:function(){
+					    alert("data submitted successfully!");
+					}
+					});
+				}
+			var username = $("#rposlist option:selected").text();
+			$
+					.ajax({
+						type : "POST",
+						dataType : "json",
+						url : "/report/inventory",
+						data : {
+							username : username
+						},
+						success : function(ram) {
+							$
+									.ajax({
+										dataType : "json",
+										url : '/report/allitems',
+										success : function(data) {
+											$('#myTime').html(data);
+											$("table tbody").empty();
+											var incrementCounter = 0;
+											$
+													.each(
+															data,
+															function(index,
+																	value) {
+																// Replace section name null value with empty space
+																var sectionName = value.section.name;
+																if (sectionName == null) {
+																	value.section.name = "";
+																}
+																// Replace price null value with empty space
+																var priceValue = value.price;
+																if (priceValue == null) {
+																	value.price = "";
+																}
+																// Replace date expiry null value with empty space
+																var dateExp = value.date_expiry;
+																if (dateExp == null) {
+																	value.date_expiry = "";
+																}
+																// Replace vendor null value with empty space
+																var vvendor = value.vendor;
+																if (vvendor == null) {
+																	value.vendor = "";
+																}
+																// Replace date purchase null value with empty space
+																var dPurchase = value.date_purchase;
+																if (dPurchase == null) {
+																	value.date_purchase = "";
+																}
+																// Replace supplier name null value with empty space
+																var vSupplierName = value.supplier.name;
+																if (vSupplierName == null) {
+																	value.supplier.name = "";
+																}
+																// Replace location null value with empty space
+																var locationValue = value.location;
+																if (locationValue == null) {
+																	value.location = "";
+																}
+																// Replace Invoice Bill Number null value with empty space
+																var invoiceBillNumber = value.invoiceBillNo;
+																if (invoiceBillNumber == null) {
+																	value.invoiceBillNo = "";
+																}
+
+																// Replace purchaser value with empty space
+																var purchaserValue = value.purchaser;
+																if (purchaserValue == null) {
+																	value.purchaser = "";
+																}
+																// Replace service tag no null with empty space
+																var STNO = value.serviceTagNo;
+																if (STNO == null) {
+																	value.serviceTagNo = "";
+																}
+																// Replace serial no null with empty space
+																var sn = value.serialno;
+																if (sn == null) {
+																	value.serialno = "";
+																}
+																// Replace Reference Letter no null with empty space
+																var refletno = value.refLetter;
+																if (refletno == null) {
+																	value.refLetter = "";
+																}
+																// Replace licence no null with empty space
+																var lic = value.license;
+																if (lic == null) {
+																	value.license = "";
+																}
+																// Replace Hard Drive null with empty space
+																var harddr = value.hardDrive;
+																if (harddr == null) {
+																	value.hardDrive = "";
+																}
+																// Replace ram null with empty space
+																var ramm = value.ram;
+																if (ramm == null) {
+																	value.ram = "";
+																}
+																// Replace processor null with empty space
+																var processorValue = value.processor.name;
+																if (processorValue == null) {
+																	value.processor.name = "";
+																}
+
+																// Replace manufacturer null with empty space
+																var manufacturerName = value.manufacturer.name;
+																if (manufacturerName == null) {
+																	value.manufacturer.name = "";
+																}
+																// Replace category null with empty space
+																var categoryName = value.category.name;
+																if (categoryName == null) {
+																	value.category.name = "";
+																}
+																// Replace cores null value with empty space
+																var coresValue = value.cores;
+																if (coresValue == null) {
+																	value.cores = "";
+																}
+
+																incrementCounter = incrementCounter + 1;
+																value.id = incrementCounter;
+																
+
+																
+																if ($(
+																		"#rposlist option:selected")
+																		.text() == 'Database Section') {
+																	
+																	var markup = "<tr><td style='font-size: small;'>"
+																			+ value.id
+																			+ "</td><td style='font-size: small;max-width: 1.4cm;overflow-wrap: break-word;'>"
+																			+ value.category.name
+																			+ "</td><td style='font-size: small;max-width: 1.4cm;overflow-wrap: break-word;'>"
+																			+ value.manufacturer.name
+																			+ "</td><td style='font-size: small;max-width: 1.4cm;overflow-wrap: break-word;'>"
+																			+ value.processor.name
+																			+ "</td><td style='font-size: small;max-width: 1.0cm;overflow-wrap: break-word;'>"
+																			+ value.cores
+																			+ "</td><td style='font-size: small;max-width: 1.3cm;overflow-wrap: break-word;'>"
+																			+ value.model
+																			+ "</td><td style='font-size: small;max-width: 1.2cm;overflow-wrap: break-word;'>"
+																			+ value.ram
+																			+ "</td><td style='font-size: small;max-width:1.2cm;overflow-wrap:break-word;'>"
+																			+ value.hardDrive
+																			+ "</td><td style='font-size: small;max-width:1.2cm;overflow-wrap:break-word;'>"
+																			+ value.license
+																			+ "</td><td style='font-size: small;max-width:1.2cm;overflow-wrap:break-word;'>"
+																			+ value.refLetter
+																			+ "</td><td style='font-size: small;max-width:1.2cm;overflow-wrap:break-word;'>"
+																			+ value.serialNo
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.serviceTagNo
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.condition.name
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.purchaser
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.invoiceBillNo
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.location
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.supplier.name
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.date_purchase
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.vendor
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.date_expiry
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.price
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.section.name
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.remarks
+																			+ "</td></tr>";
+
+																} else {
+
+																	var markup = "<tr><td style='font-size: small;'>"
+																			+ value.id
+																			+ "</td><td style='font-size: small;max-width: 1.4cm;overflow-wrap: break-word;'>"
+																			+ value.category.name
+																			+ "</td><td style='font-size: small;max-width: 1.4cm;overflow-wrap: break-word;'>"
+																			+ value.manufacturer.name
+																			+ "</td><td style='font-size: small;max-width: 1.4cm;overflow-wrap: break-word;'>"
+																			+ value.processor.name
+																			+ "</td><td style='font-size: small;max-width: 1.3cm;overflow-wrap: break-word;'>"
+																			+ value.model
+																			+ "</td><td style='font-size: small;max-width: 1.2cm;overflow-wrap: break-word;'>"
+																			+ value.ram
+																			+ "</td><td style='font-size: small;max-width:1.2cm;overflow-wrap:break-word;'>"
+																			+ value.serialNo
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.serviceTagNo
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.condition.name
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.supplier.name
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.date_purchase
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.vendor
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.date_expiry
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.price
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.section.name
+																			+ "</td><td style='font-size: small;max-width: 2.2cm;overflow-wrap: break-word;'>"
+																			+ value.remarks
+																			+ "</td></tr>";
+
+																}
+																if ($(
+																		"#rposlist option:selected")
+																		.text() == 'Database Section') {
+																	$(
+																			"#thCores")
+																			.show();
+																	$("#thRAM")
+																			.show();
+																	$(
+																			"#thLicence")
+																			.show();
+																	$(
+																			"#thReferenceLetterNo")
+																			.show();
+																	$(
+																			"#thReferenceLetterNo")
+																			.show();
+																	$(
+																			"#thPurchaserInfo")
+																			.show();
+																	$(
+																			"#thLocation")
+																			.show();
+																	$(
+																			"#thInvoice")
+																			.show();
+																	
+																	$(
+																	"#thCategory")
+																	.show();
+																	$(
+																	"#thManufacturer")
+																	.show();
+																	$(
+																	"#thProcessor")
+																	.show();
+																	$(
+																	"#thModel")
+																	.show();
+																	$("#thHD").show();
+																	$(
+																	"#thSerialNo")
+																	.show();
+																	$(
+																	"#thServiceTagNo")
+																	.show();
+																	$(
+																	"#thCondition")
+																	.show();
+																	$(
+																	"#thPurchaserInfo")
+																	.show();
+																	$(
+																	"#thInvoice")
+																	.show();
+																	$(
+																	"#thSupplier")
+																	.show();
+																	$(
+																	"#thWarranty")
+																	.show();
+																	$(
+																	"#thWarra")
+																	.show();
+																	$(
+																	"#thVendor")
+																	.show();
+																	$(
+																	"#thDatePurchase")
+																	.show();
+																	$(
+																	"#thPrice")
+																	.show();
+																	$(
+																	"#thRecommender")
+																	.show();
+																	$(
+																	"#thRemarks")
+																	.show();
+																} else {
+																	$(
+																			"#thCores")
+																			.hide();
+																	$("#thHD")
+																			.hide();
+																	$(
+																			"#thLicence")
+																			.hide();
+																	$(
+																			"#thReferenceLetterNo")
+																			.hide();
+																	$(
+																			"#thReferenceLetterNo")
+																			.hide();
+																	$(
+																			"#thPurchaserInfo")
+																			.hide();
+																	$(
+																			"#thLocation")
+																			.hide();
+																	$(
+																			"#thInvoice")
+																			.hide();
+																	$("#thCategory").show();
+																	$("#thManufacturer").show();
+																	$("#thProcessor").show();
+																	$("#thModel").show();
+																	$("#thRAM").show();
+																	$("#thSerialNo").show();
+																	$("#thServiceTagNo").show();
+																	$("#thCondition").show();
+																	$("#thSupplier").show();
+																	$("#thVendor").show();
+																	$("#thWarranty").show();
+																	$("#thDatePurchase").show();
+																	$("#thPrice").show();
+																	$("#thRecommender").show();
+																	$("#thRemarks").show();
+
+
+
+
+
+
+
+
+																	
+																	
+																}
+
+																$("table tbody")
+																		.append(
+																				markup);
+
+															});
+										}
+									});
+						},
+						error : function() {
+							alert("error");
+						}
+					})
+		}
+	</script>
+	<nav class="navbar navbar-expand-lg navbar-light"
+		style="background-color: #D3D3D3;">
+		<a class="navbar-brand" href="#" th:text="'Welcome '+${rpoName}+'!'">Welcome</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+
+				<li class="nav-item active"><a class="nav-link" href="#">Create
+						Users</a></li>
+				<li class="nav-item active"><a class="nav-link" href="#">Create
+						Entity</a></li>
+				<li class="nav-item active"><a class="nav-link" href="#">Change
+						Password</a></li>
+				<li class="nav-item dropdown">
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="#">Action</a> <a
+							class="dropdown-item" href="#">Another action</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item active"><a th:href="@{/}" class="nav-link"
+					href="#">Logout</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<br>
+		<h5>Inventory Management Report</h5>
+		<hr>
+		<!-- Add Hardware button -->
+
+		<div class="row">
+			<select class="form-control mb-4 col-2"
+				style="margin-left: 0.5cm; font-size: small; max-width: 7.0cm;"
+				th:field="${user.Id}" id="rposlist">
+				<option value="0">All Regional Offices and Missions Abroad</option>
+				<option th:each="users : ${users}" th:value="${user.Id}"
+					th:text="${users.Fullname}"></option>
+			</select> <input type="hidden" name="userID" th:value="${userID}" />
+			<button type="button" onclick="generateReport()"
+				class="btn btn-primary btn-sm mb-4" style="margin-left: 0.5cm">View
+				Report</button>
+			<button type="button" onclick="generateReport()"
+				class="btn btn-primary btn-sm mb-4" style="margin-left: 0.5cm">All
+				RPOs Report</button>
+			<button id="exportToExcel" type="button"
+				class="btn btn-primary btn-sm mb-4"
+				style="margin-left: 0.3cm; width: 2.5cm">Export</button>
+		</div>
+		<div class="table table-striped table-bordered table-sm"
+			cellspacing="0" width="100%">
+			<table id="table2excel"
+				class="table .table td.fit, .table th.fit { white-space: nowrap;width: 1%; }">
+				<thead>
+					<tr>
+						<th style="font-size: small;">#</th>
+						<th id="thCategory"
+							style="font-size: small; max-width: 1.4cm; overflow-wrap: break-word;">Cat</th>
+						<th id="thManufacturer"
+							style="font-size: small; max-width: 1.4cm; overflow-wrap: break-word;">Manufacturer</th>
+						<th id="thProcessor"
+							style="font-size: small; max-width: 1.4cm; overflow-wrap: break-word;">Processor</th>
+						<th id="thCores"
+							style="font-size: small; max-width: 1.0cm; overflow-wrap: break-word;">Cores</th>
+						<th id="thModel"
+							style="font-size: small; max-width: 1.3cm; overflow-wrap: break-word;">Model</th>
+						<th id="thRAM"
+							style="font-size: small; max-width: 1.2cm; overflow-wrap: break-word;">Ram</th>
+						<th id="thHD"
+							style="font-size: small; max-width: 1.2cm; overflow-wrap: break-word;">HD
+							/No. HD</th>
+						<th id="thLicence"
+							style="font-size: small; max-width: 1.2cm; overflow-wrap: break-word;">Licence
+							Info</th>
+						<th id="thReferenceLetterNo"
+							style="font-size: small; max-width: 1.2cm; overflow-wrap: break-word;">Reference
+							Letter</th>
+						<th id="thSerialNo"
+							style="font-size: small; max-width: 1.9cm; overflow-wrap: break-word;">Serial
+							No</th>
+						<th id="thServiceTagNo"
+							style="font-size: small; max-width: 2.2cm; overflow-wrap: break-word;">Service
+							Tag</th>
+						<th id="thCondition"
+							style="font-size: small; max-width: 1.7cm; overflow-wrap: break-word;">Condition</th>
+						<th id="thPurchaserInfo"
+							style="font-size: small; max-width: 1.7cm; overflow-wrap: break-word;">Purchaser
+							Info</th>
+						<th id="thInvoice"
+							style='font-size: small; max-width: 2.2cm; overflow-wrap: break-word;'>Invoice
+							Bill</th>
+						<th id="thLocation"
+							style='font-size: small; max-width: 2.2cm; overflow-wrap: break-word;'>Location
+							Server</th>
+						<th id="thSupplier"
+							style="font-size: small; max-width: 1.5cm; overflow-wrap: break-word;">Supplier</th>
+						<th id="thDatePurchase"
+							style="font-size: small; max-width: 2.0cm; overflow-wrap: break-word;">Date
+							Purchase</th>
+						<th id="thVendor"
+							style="font-size: small; max-width: 1.7cm; overflow-wrap: break-word;">Vendor</th>
+						<th id="thWarranty"
+							style="font-size: small; max-width: 2.0cm; overflow-wrap: break-word;">Warranty
+							Expiry</th>
+						<th id="thPrice"
+							style="font-size: small; max-width: 1.5cm; overflow-wrap: break-word;">Price</th>
+						<th id="thRecommender"
+							style="font-size: small; max-width: 1.9cm; overflow-wrap: break-word;">Recommender</th>
+						<th id="thRemarks"
+							style="font-size: small; max-width: 2.6cm; overflow-wrap: break-word;">Remarks</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</body>
+
+</html>

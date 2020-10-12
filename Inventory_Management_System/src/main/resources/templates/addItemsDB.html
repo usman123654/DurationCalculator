@@ -1,0 +1,947 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="shortcut icon" th:href="@{/images/icons/favicon.ico}">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}">
+<script type="text/javascript"
+	th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script>
+	function myFunction() {
+		if ($("#selectedcategory option:selected").text() == 'pc'
+				|| $("#selectedcategory option:selected").text() == 'Server') {
+			if ($("#selectedcategory option:selected").text() == 'Server') {
+				if (!($("#cores").val() == "")) {
+					if (!($("#model").val() == "")) {
+						if (!($("#ram").val() == "")) {
+							if (!($("#hardDrive").val() == "")) {
+								if (!($("#serialNo").val() == "")
+										|| !($("#serviceTagNo").val() == "")) {
+									$("#myForm")
+											.submit(
+													function(event) {
+														var x = 1;
+														event.preventDefault();
+														var values = $(this)
+																.serialize();
+														var request = $
+																.ajax({
+																	dataType : 'text',
+																	cache : false,
+																	url : "/test/get_time.htm",
+																	type : "post",
+																	data : values,
+																	async : true,
+																	success : function() {
+																		x = 2;
+																		var useride = $(
+																				"#userid")
+																				.val();
+																		var category = $(
+																				"#selectedcategory option:selected")
+																				.text();
+																		var manufacturer = $(
+																				"#selectedmanufacturer option:selected")
+																				.text();
+																		var processor = $(
+																				"#selectedprocessor option:selected")
+																				.text();
+																		var totalcores = $(
+																				"#cores")
+																				.val();
+
+																		var modelno = $(
+																				"#model")
+																				.val();
+
+																		var ramno = $(
+																				"#ram")
+																				.val();
+																		var hardno = $(
+																				"#hardDrive")
+																				.val();
+																		var licenceno = $(
+																				"#licence")
+																				.val();
+																		var refLetterNo = $(
+																				"#refLetterNo")
+																				.val();
+
+																		var serialNo = $(
+																				"#serialNo")
+																				.val();
+																		var servicetagno = $(
+																				"#serviceTagNo")
+																				.val();
+																		var condition = $(
+																				"#condition option:selected")
+																				.text();
+
+																		var purchaserInfo = $(
+																				"#purchaser")
+																				.val();
+
+																		var invoice = $(
+																				"#invoiceBillNo")
+																				.val();
+
+																		var location = $(
+																				"#locationServer")
+																				.val();
+
+																		var supplier = $(
+																				"#selectedsupplier option:selected")
+																				.text();
+
+																		var remarks = $(
+																				"#remarks")
+																				.val();
+																		var date_indent = $(
+																				"#date_indent")
+																				.val();
+																		var date_approval = $(
+																				"#date_approval")
+																				.val();
+																		var date_issuance = $(
+																				"#date_issuance")
+																				.val();
+																		var date_purchase = $(
+																				"#date_purchase")
+																				.val();
+																		var vendor = $(
+																				"#vendor")
+																				.val();
+																		var approved_by = $(
+																				"#approved_by")
+																				.val();
+																		var warranty_expiry_date = $(
+																				"#date_expiry")
+																				.val();
+																		var price = $(
+																				"#price")
+																				.val();
+																		var recommended_by = $(
+																				"#section option:selected")
+																				.text();
+																		var itemcondition = $(
+																				"#condition option:selected")
+																				.text();
+
+																		var purchaser_info = $(
+																				"#date_purchase")
+																				.val();
+
+																		var remarks = $(
+																				"#remarks")
+																				.val();
+
+																		var markup = "<tr style='font-size:small'><td></td><td>"
+																				+ category
+																				+ "</td><td>"
+																				+ manufacturer
+																				+ "</td><td>"
+																				+ processor
+																				+ "</td><td>"
+																				+ totalcores
+																				+ "</td><td>"
+																				+ modelno
+																				+ "</td><td>"
+																				+ ramno
+																				+ "</td><td>"
+																				+ hardno
+																				+ "</td><td>"
+																				+ licenceno
+																				+ "</td><td>"
+																				+ refLetterNo
+																				+ "</td><td>"
+																				+ serialNo
+																				+ "</td><td>"
+																				+ servicetagno
+																				+ "</td><td>"
+																				+ itemcondition
+																				+ "</td><td>"
+																				+ purchaserInfo
+																				+ "</td><td>"
+																				+ invoice
+																				+ "</td><td>"
+																				+ location
+																				+ "</td><td>"
+																				+ supplier
+																				+ "</td><td>"
+																				+ date_purchase
+																				+ "</td><td>"
+																				+ vendor
+																				+ "</td><td>"
+																				+ warranty_expiry_date
+																				+ "</td><td>"
+																				+ price
+																				+ "</td><td>"
+																				+ remarks
+																				+ "</td><td>"
+																				+ recommended_by
+																				+ "</td><tr>";
+
+																		if (x > 1) {
+																			alert("Data Submitted Successfully!");
+																			$(
+																					"#myTable")
+																					.append(
+																							markup);
+																		}
+																		$("#myForm")[0]
+																				.reset();
+
+																	},
+																	error : function() {
+																		alert("same serial number or service tag number already exists or One of the two Serial no or Service tag no is mandatory");
+																	}
+
+																});
+
+													});
+								} else {
+									alert("One of the two serial no or service tag no is mandatory");
+								}
+							} else {
+								alert("Hard Drive not entered!");
+							}
+						} else {
+							alert("RAM not entered!");
+						}
+					} else {
+						alert("Model not entered!");
+					}
+				} else {
+					alert("No Cores mandatory for Server");
+				}
+			} else {
+				// then it should be pc
+				if (!($("#selectedprocessor option:selected").text() == "--")) {
+					if (!($("#model").val() == "")) {
+						if (!($("#ram").val() == "")) {
+							if (!($("#hardDrive").val() == "")) {
+								if (!($("#serialNo").val() == "")
+										|| !($("#serviceTagNo").val() == "")) {
+									// if every thing okay then insert to db
+									$("#myForm")
+											.submit(
+													function(event) {
+														var x = 1;
+														event.preventDefault();
+														var values = $(this)
+																.serialize();
+														var request = $
+																.ajax({
+																	dataType : 'text',
+																	cache : false,
+																	url : "/test/get_time.htm",
+																	type : "post",
+																	data : values,
+																	async : true,
+																	success : function() {
+																		x = 2;
+																		var useride = $(
+																				"#userid")
+																				.val();
+																		var category = $(
+																				"#selectedcategory option:selected")
+																				.text();
+																		var manufacturer = $(
+																				"#selectedmanufacturer option:selected")
+																				.text();
+																		var processor = $(
+																				"#selectedprocessor option:selected")
+																				.text();
+																		var totalcores = $(
+																				"#cores")
+																				.val();
+
+																		var modelno = $(
+																				"#model")
+																				.val();
+
+																		var ramno = $(
+																				"#ram")
+																				.val();
+																		var hardno = $(
+																				"#hardDrive")
+																				.val();
+																		var licenceno = $(
+																				"#licence")
+																				.val();
+																		var refLetterNo = $(
+																				"#refLetterNo")
+																				.val();
+
+																		var serialNo = $(
+																				"#serialNo")
+																				.val();
+																		var servicetagno = $(
+																				"#serviceTagNo")
+																				.val();
+																		var condition = $(
+																				"#condition option:selected")
+																				.text();
+
+																		var purchaserInfo = $(
+																				"#purchaser")
+																				.val();
+
+																		var invoice = $(
+																				"#invoiceBillNo")
+																				.val();
+
+																		var location = $(
+																				"#locationServer")
+																				.val();
+
+																		var supplier = $(
+																				"#selectedsupplier option:selected")
+																				.text();
+
+																		var remarks = $(
+																				"#remarks")
+																				.val();
+																		var date_indent = $(
+																				"#date_indent")
+																				.val();
+																		var date_approval = $(
+																				"#date_approval")
+																				.val();
+																		var date_issuance = $(
+																				"#date_issuance")
+																				.val();
+																		var date_purchase = $(
+																				"#date_purchase")
+																				.val();
+																		var vendor = $(
+																				"#vendor")
+																				.val();
+																		var approved_by = $(
+																				"#approved_by")
+																				.val();
+																		var warranty_expiry_date = $(
+																				"#date_expiry")
+																				.val();
+																		var price = $(
+																				"#price")
+																				.val();
+																		var recommended_by = $(
+																				"#section option:selected")
+																				.text();
+																		var itemcondition = $(
+																				"#condition option:selected")
+																				.text();
+
+																		var purchaser_info = $(
+																				"#date_purchase")
+																				.val();
+
+																		var remarks = $(
+																				"#remarks")
+																				.val();
+
+																		var markup = "<tr style='font-size:small'><td></td><td>"
+																				+ category
+																				+ "</td><td>"
+																				+ manufacturer
+																				+ "</td><td>"
+																				+ processor
+																				+ "</td><td>"
+																				+ totalcores
+																				+ "</td><td>"
+																				+ modelno
+																				+ "</td><td>"
+																				+ ramno
+																				+ "</td><td>"
+																				+ hardno
+																				+ "</td><td>"
+																				+ licenceno
+																				+ "</td><td>"
+																				+ refLetterNo
+																				+ "</td><td>"
+																				+ serialNo
+																				+ "</td><td>"
+																				+ servicetagno
+																				+ "</td><td>"
+																				+ itemcondition
+																				+ "</td><td>"
+																				+ purchaserInfo
+																				+ "</td><td>"
+																				+ invoice
+																				+ "</td><td>"
+																				+ location
+																				+ "</td><td>"
+																				+ supplier
+																				+ "</td><td>"
+																				+ date_purchase
+																				+ "</td><td>"
+																				+ vendor
+																				+ "</td><td>"
+																				+ warranty_expiry_date
+																				+ "</td><td>"
+																				+ price
+																				+ "</td><td>"
+																				+ remarks
+																				+ "</td><td>"
+																				+ recommended_by
+																				+ "</td><tr>";
+
+																		if (x > 1) {
+																			alert("Data Submitted Successfully!");
+																			$(
+																					"#myTable")
+																					.append(
+																							markup);
+																		}
+																		$("#myForm")[0]
+																				.reset();
+
+																	},
+																	error : function() {
+																		alert("same serial number or service tag number already exists or One of the two Serial no or Service tag no is mandatory");
+																	}
+
+																});
+
+													});
+								} else {
+									alert("One of the two serial no or service tag no is mandatory");
+								}
+							} else {
+								alert("Hard Drive is Mandatory for PC!");
+							}
+
+						} else {
+							alert("RAM is Mandatory for PC!");
+						}
+					} else {
+						alert("Model is Mandatory for PC!");
+					}
+				} else {
+					alert("Processor is Mandatory for PC!");
+				}
+
+			}
+		} else {
+			// work need to be done here! None of PC or Server
+			if (!($("#model").val() == "")) {
+				if ($("#selectedcategory option:selected").text() == 'pc'||$("#selectedcategory option:selected").text() == 'Server') { 
+					$("#myForm")
+					.submit(
+							function(event) {
+								var x = 1;
+								event.preventDefault();
+								var values = $(this)
+										.serialize();
+								var request = $
+										.ajax({
+											dataType : 'text',
+											cache : false,
+											url : "/test/get_time.htm",
+											type : "post",
+											data : values,
+											async : true,
+											success : function() {
+												x = 2;
+												var useride = $(
+														"#userid")
+														.val();
+												var category = $(
+														"#selectedcategory option:selected")
+														.text();
+												var manufacturer = $(
+														"#selectedmanufacturer option:selected")
+														.text();
+												var processor = $(
+														"#selectedprocessor option:selected")
+														.text();
+												var totalcores = $(
+														"#cores")
+														.val();
+
+												var modelno = $(
+														"#model")
+														.val();
+
+												var ramno = $(
+														"#ram")
+														.val();
+												var hardno = $(
+														"#hardDrive")
+														.val();
+												var licenceno = $(
+														"#licence")
+														.val();
+												var refLetterNo = $(
+														"#refLetterNo")
+														.val();
+
+												var serialNo = $(
+														"#serialNo")
+														.val();
+												var servicetagno = $(
+														"#serviceTagNo")
+														.val();
+												var condition = $(
+														"#condition option:selected")
+														.text();
+
+												var purchaserInfo = $(
+														"#purchaser")
+														.val();
+
+												var invoice = $(
+														"#invoiceBillNo")
+														.val();
+
+												var location = $(
+														"#locationServer")
+														.val();
+
+												var supplier = $(
+														"#selectedsupplier option:selected")
+														.text();
+
+												var remarks = $(
+														"#remarks")
+														.val();
+												var date_indent = $(
+														"#date_indent")
+														.val();
+												var date_approval = $(
+														"#date_approval")
+														.val();
+												var date_issuance = $(
+														"#date_issuance")
+														.val();
+												var date_purchase = $(
+														"#date_purchase")
+														.val();
+												var vendor = $(
+														"#vendor")
+														.val();
+												var approved_by = $(
+														"#approved_by")
+														.val();
+												var warranty_expiry_date = $(
+														"#date_expiry")
+														.val();
+												var price = $(
+														"#price")
+														.val();
+												var recommended_by = $(
+														"#section option:selected")
+														.text();
+												var itemcondition = $(
+														"#condition option:selected")
+														.text();
+
+												var purchaser_info = $(
+														"#date_purchase")
+														.val();
+
+												var remarks = $(
+														"#remarks")
+														.val();
+
+												var markup = "<tr style='font-size:small'><td></td><td>"
+														+ category
+														+ "</td><td>"
+														+ manufacturer
+														+ "</td><td>"
+														+ processor
+														+ "</td><td>"
+														+ totalcores
+														+ "</td><td>"
+														+ modelno
+														+ "</td><td>"
+														+ ramno
+														+ "</td><td>"
+														+ hardno
+														+ "</td><td>"
+														+ licenceno
+														+ "</td><td>"
+														+ refLetterNo
+														+ "</td><td>"
+														+ serialNo
+														+ "</td><td>"
+														+ servicetagno
+														+ "</td><td>"
+														+ itemcondition
+														+ "</td><td>"
+														+ purchaserInfo
+														+ "</td><td>"
+														+ invoice
+														+ "</td><td>"
+														+ location
+														+ "</td><td>"
+														+ supplier
+														+ "</td><td>"
+														+ date_purchase
+														+ "</td><td>"
+														+ vendor
+														+ "</td><td>"
+														+ warranty_expiry_date
+														+ "</td><td>"
+														+ price
+														+ "</td><td>"
+														+ remarks
+														+ "</td><td>"
+														+ recommended_by
+														+ "</td><tr>";
+												if (x > 1) {
+													alert("Data Submitted Successfully!");
+													$(
+															"#myTable")
+															.append(
+																	markup);
+												}
+												$("#myForm")[0]
+														.reset();
+											},
+											error : function() {
+												alert("same serial number or service tag number already exists or One of the two Serial no or Service tag no is mandatory");
+											}
+										});
+							});
+				} else {
+				alert("One of the two Serial Number or Service Tag Number is mandatory");		
+				}
+			} else {
+				alert("Model is Mandatory!");
+			}
+		}
+	}
+</script>
+<script>
+	$(document).ready(function() {
+		$("#selectedcategory").change(function() {
+			var selectedcategory = $(this).children("option:selected").text();
+			if ((selectedcategory == 'pc') || (selectedcategory == 'Server')) {
+				$("#refLetterNoLabel").show();
+				$("#refLetterNo").show();
+				$("#licenceLabel").show();
+				$("#licence").show();
+				$("#ramLabel").show();
+				$("#ram").show();
+				$("#selectedprocessor").show();
+				$("#processorlabel").show();
+				$("#noCoresLabel").show();
+				$("#cores").show();
+				$("#hardDriveLabel").show();
+				$("#hardDrive").show();
+				$("#locationServerLabel").show();
+				$("#locationServer").show();
+			} else {
+				$("#refLetterNoLabel").hide();
+				$("#refLetterNo").hide();
+				$("#licenceLabel").hide();
+				$("#licence").hide();
+				$("#ramLabel").hide();
+				$("#ram").hide();
+				$("#selectedprocessor").hide();
+				$("#processorlabel").hide();
+				$("#noCoresLabel").hide();
+				$("#cores").hide();
+				$("#hardDriveLabel").hide();
+				$("#hardDrive").hide();
+				$("#locationServerLabel").hide();
+				$("#locationServer").hide();
+			}
+		});
+	});
+</script>
+<script>
+	$(document).ready(
+			function() {
+				var selectedsupplier = $("#selectedsupplier").children(
+						"option:selected").text();
+				if (selectedsupplier == 'HQ') {
+					$("#date_purchase").hide();
+					$("#datePurchaseLabel").hide();
+					$("#vendorLabel").hide();
+					$("#vendor").hide();
+					$("#dateExpiryLabel").hide();
+					$("#date_expiry").hide();
+					$("#priceLabel").hide();
+					$("#price").hide();
+					$("#dateIndentLabel").hide();
+					$("#date_indent").hide();
+					$("#dateApprovalLabel").hide();
+					$("#date_approval").hide();
+					$("#dateIssuanceLabel").hide();
+					$("#date_issuance").hide();
+					$("#recommendedBy").show();
+
+				} else if ((selectedsupplier == 'Local Budget')) {
+					$("#condition").show();
+					$("#date_purchase").show();
+					$("#datePurchaseLabel").show();
+					$("#vendorLabel").show();
+					$("#vendor").show();
+					$("#dateExpiryLabel").show();
+					$("#date_expiry").show();
+					$("#priceLabel").show();
+					$("#price").show();
+					$("#dateIndentLabel").hide();
+					$("#date_indent").hide();
+					$("#dateApprovalLabel").hide();
+					$("#date_approval").hide();
+					$("#dateIssuanceLabel").hide();
+					$("#date_issuance").hide();
+					$("#recommendedBy").hide();
+					$("#section").hide();
+
+				}
+				$("#selectedsupplier").change(
+						function() {
+							var selectedsupplier = $(this).children(
+									"option:selected").text();
+							if ((selectedsupplier == 'HQ')) {
+								$("#date_purchase").hide();
+								$("#datePurchaseLabel").hide();
+								$("#vendorLabel").hide();
+								$("#vendor").hide();
+								$("#dateExpiryLabel").hide();
+								$("#date_expiry").hide();
+								$("#priceLabel").hide();
+								$("#price").hide();
+								$("#dateIndentLabel").hide();
+								$("#date_indent").hide();
+								$("#dateApprovalLabel").hide();
+								$("#date_approval").hide();
+								$("#dateIssuanceLabel").hide();
+								$("#date_issuance").hide();
+								$("#recommendedBy").show();
+								$("#section").show();
+
+							} else if ((selectedsupplier == 'Local Budget')) {
+								$("#date_purchase").show();
+								$("#datePurchaseLabel").show();
+								$("#vendorLabel").show();
+								$("#vendor").show();
+								$("#dateExpiryLabel").show();
+								$("#date_expiry").show();
+								$("#priceLabel").show();
+								$("#price").show();
+								$("#dateIndentLabel").hide();
+								$("#date_indent").hide();
+								$("#dateApprovalLabel").hide();
+								$("#date_approval").hide();
+								$("#dateIssuanceLabel").hide();
+								$("#date_issuance").hide();
+								$("#recommendedBy").hide();
+								$("#section").hide();
+							}
+						});
+			});
+</script>
+<title>Hardware Directory</title>
+</head>
+
+<body>
+	<script>
+		$(document).ready(function() {
+			window.history.pushState(null, "", window.location.href);
+			window.onpopstate = function() {
+				window.history.pushState(null, "", window.location.href);
+			};
+		});
+	</script>
+	<p id="id_time"></p>
+	<div class="container-fluid">
+		<p class="h4 mb-2" style="font-size: large">Add Items</p>
+		<form id="myForm" autocomplete="off" action="#"
+			th:action="@{/items/save}" th:object="${item}" method="POST"
+			style="font-size: small" onsubmit="return false;">
+			<div class="form-row">
+				<div class="col-md-3">
+					<label id="categoryLabel">Category:</label> <select
+						id="selectedcategory" th:field="*{category}"
+						class="form-control mb-1 col-10" style="font-size: small">
+
+						<option type="text" th:each="category:${category}"
+							class="form-control mb-4 col-2" style="font-size: small"
+							th:value="${category.Id}" th:name="${category.Name}"
+							th:text="${category.Name}" />
+					</select>
+					<!-- Add hidden form field to handle update -->
+					<label id="manufacturerLabel"> Manufacturer: </label><select
+						id="selectedmanufacturer" th:field="*{manufacturer}"
+						class="form-control mb-1 col-10" style="font-size: small">
+						<option type="text" th:each="manufacturer:${manufacturer}"
+							class="form-control mb-4 col-2" style="font-size: small"
+							th:value="${manufacturer.Id}" th:name="${manufacturer.Name}"
+							th:text="${manufacturer.Name}" />
+					</select><label id="processorlabel">Processor:</label> <select
+						id="selectedprocessor" th:field="*{processor}"
+						class="form-control mb-1 col-10" style="font-size: small">
+						<option th:each="processor:${processor}"
+							class="form-control mb-4 col-9" style="font-size: small"
+							th:value="${processor.Id}" th:name="${processor.Name}"
+							th:text="${processor.Name}" />
+					</select> <label id="noCoresLabel">No Cores:</label> <input id="cores"
+						type="text" th:field="*{cores}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="No. Cores" maxlength="10"> <label
+						id="modelLabel">Model:</label> <input id="model" type="text"
+						th:field="*{model}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="model" maxlength="50">
+				</div>
+				<div class="col-md-3">
+					<label id="ramLabel">Ram:</label> <input id="ram" type="text"
+						th:field="*{Ram}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="ram" maxlength="10"> <label
+						id="hardDriveLabel">Hard Drive:</label> <input id="hardDrive"
+						type="text" th:field="*{hardDrive}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						placeholder="Hard Drives" maxlength="30"> <label id="licenceLabel">Licence:</label>
+					<input id="licence" type="text" th:field="*{license}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						placeholder="Licence" maxlength="100"> <label id="refLetterNoLabel">Reference
+						Letter No:</label> <input id="refLetterNo" type="text"
+						th:field="*{refLetter}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="Reference Letter" maxlength="30"> <label
+						id="serialNoLabel">Serial No:</label> <input id="serialNo"
+						type="text" th:field="*{serialNo}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						placeholder="serial No" maxlength="20">
+				</div>
+				<div class="col-md-3">
+					<label id="serviceTagNoLabel">Service Tag No:</label> <input
+						id="serviceTagNo" type="text" th:field="*{serviceTagNo}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						placeholder="Service Tag No" maxlength="20"> <label id="conditionLabel"
+						style="font-size: small">Condition:</label> <select id="condition"
+						th:field="*{condition}" class="form-control mb-1 col-10"
+						style="font-size: small">
+						<option th:each="condition:${condition}"
+							class="form-control mb-1 col-9" style="font-size: small"
+							th:value="${condition.Id}" th:name="${condition.Name}"
+							th:text="${condition.Name}" />
+					</select> <label id="purchaserInfoLabel">Purchaser Info:</label> <input
+						id="purchaser" type="text" th:field="*{purchaser}"
+						class="form-control mb-1 col-10" style="font-size: small" s
+						placeholder="Purchaser Info" maxlength="50"> <label id="invoiceLabel">Invoice
+						Label:</label> <input id="invoiceBillNo" type="text"
+						th:field="*{InvoiceBillNo}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="Invoice/Bill No" maxlength="50"> <label
+						id="locationServerLabel">Location PC/Server:</label> <input
+						id="locationServer" type="text" th:field="*{location}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						placeholder="Location of PC/Server" maxlength="30">
+				</div>
+				<div class="col-md-3">
+					<label id="supplierLabel" style="font-size: small">Supplier:</label>
+					<select id="selectedsupplier" th:field="*{supplier}"
+						class="form-control mb-1 col-10" style="font-size: small">
+						<option th:each="supplier:${supplier}"
+							class="form-control mb-4 col-9" style="font-size: small"
+							th:value="${supplier.Id}" th:name="${supplier.Name}"
+							th:text="${supplier.Name}" />
+					</select> <label id="dateIndentLabel" style="font-size: small">Date
+						Indent:</label> <input rows="5" col="4" id="date_indent" type="date"
+						th:field="*{date_indent}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="Date Indent" /> <label
+						id="dateApprovalLabel" style="font-size: small">Date
+						Approval:</label> <input rows="5" col="4" id="date_approval" type="date"
+						th:field="*{date_approval}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="Date Approval" /> <label
+						id="dateIssuanceLabel" style="font-size: small">Date
+						Issuance:</label> <input rows="5" col="4" id="date_issuance" type="date"
+						th:field="*{date_issuance}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="Date Issuance" /> <label
+						id="datePurchaseLabel" style="font-size: small">Date
+						Purchase:</label> <input rows="5" col="4" id="date_purchase" type="date"
+						th:field="*{date_purchase}" class="form-control mb-1 col-10"
+						style="font-size: small" placeholder="Date Purchase" /> <label
+						id="vendorLabel" style="font-size: small">Vendor:</label> <input
+						rows="5" col="4" id="vendor" type="text" th:field="*{vendor}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						placeholder="Vendor" /> <label id="dateExpiryLabel"
+						style="font-size: small">Warranty Expiry:</label> <input rows="5"
+						col="4" id="date_expiry" type="date" th:field="*{date_expiry}"
+						class="form-control mb-1 col-10" style="font-size: small" /> <label
+						id="priceLabel" style="font-size: small">Price:</label> <input
+						id="price" type="text" th:field="*{price}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						placeholder="Price"> <label id="remarksLabel"
+						style="font-size: small">Remarks:</label>
+					<textarea id="remarks" type="textarea" th:field="*{remarks}"
+						class="form-control mb-1 col-10" style="font-size: small"
+						maxlength="200" size="10" placeholder=""></textarea>
+
+					<label id="recommendedBy" style="font-size: small">Recommended
+						By:</label> <select id="section" th:field="*{section}"
+						class="form-control mb-1 col-10" style="font-size: small">
+						<option th:each="section:${section}"
+							class="form-control mb-1 col-9" style="font-size: small"
+							th:value="${section.Id}" th:name="${section.Name}"
+							th:text="${section.Name}" />
+					</select>
+				</div>
+				<div class="col-md-3">
+					<br> <input id="userid" name="userid" type="hidden"
+						th:field="${user.Id}" class="form-control mb-1 col-6"
+						placeholder="user"> <input id="addItemButton"
+						type="submit" onclick="myFunction()" class="btn btn-info col-8"
+						value="Add Items" />
+				</div>
+			</div>
+		</form>
+		<div class="form-row">
+			<form id="backtomainpage" action="#"
+				th:action="@{/items/showMainPageDB}" th:object="${user}"
+				method="POST">
+				<div class="table-responsive">
+					<br>
+					<table id="myTable" class="table table-striped w-auto">
+						<thead>
+							<tr>
+								<th style="font-size: small">#</th>
+								<th style="font-size: small">Category</th>
+								<th style="font-size: small">Manufacturer</th>
+								<th style="font-size: small">Processor</th>
+								<th style="font-size: small">No Cores</th>
+								<th style="font-size: small">Model</th>
+								<th style="font-size: small">Ram</th>
+								<th style="font-size: small">Hard Drive</th>
+								<th style="font-size: small">Licence</th>
+								<th style="font-size: small">Reference Letter</th>
+								<th style="font-size: small">Serial No</th>
+								<th style="font-size: small">Service Tag</th>
+								<th style="font-size: small">Condition</th>
+								<th style="font-size: small">Purchaser Info</th>
+								<th style="font-size: small">Invoice/ Bill No</th>
+								<th style="font-size: small">Location Server</th>
+								<th style="font-size: small">Supplied By</th>
+								<th style="font-size: small">Date Purchase</th>
+								<th style="font-size: small">Vendor</th>
+								<th style="font-size: small">Warranty Exp Date</th>
+								<th style="font-size: small">Price</th>
+								<th style="font-size: small">Remarks</th>
+								<th style="font-size: small">Recommended By:</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<input id="userid" name="userid" type="hidden" th:field="${user.Id}"
+					class="form-control mb-4 col-6" placeholder="user">
+				<button type="submit" class="btn btn-info col-2">Main Page</button>
+			</form>
+		</div>
+		</br>
+	</div>
+</body>
+</html>
